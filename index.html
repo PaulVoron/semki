@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сємкі (Number Match)</title>
+    <meta name="description" content="Класична гра-головоломка Сємкі. Знайдіть пари чисел з однаковим значенням або сумою 10.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="glass-header">
+            <div class="header-content">
+                <h1>Сємкі</h1>
+                <div class="header-right">
+                    <button id="header-restart-btn" class="icon-btn" title="Перезапуск">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                    </button>
+                    <div class="score-container">
+                        <span class="score-label">Рахунок:</span>
+                        <span id="score">0</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="game-area">
+            <div id="board" class="board"></div>
+            
+            <!-- Game Over Overlay -->
+            <div id="game-over" class="hidden game-over-overlay">
+                <div class="game-over-content">
+                    <h2>Вітаємо!</h2>
+                    <p>Ви успішно очистили поле!</p>
+                    <button id="restart-btn" class="primary-btn">Грати знову</button>
+                </div>
+            </div>
+
+            <!-- Start Game Overlay -->
+            <div id="start-overlay" class="game-over-overlay">
+                <div class="game-over-content">
+                    <h2>Оберіть тип гри</h2>
+                    <p>Класична розкладка або згенерована випадково?</p>
+                    <div class="popup-buttons">
+                        <button id="mode-classic-btn" class="primary-btn">Класична</button>
+                        <button id="mode-random-btn" class="primary-btn outline-btn">Рандомна</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hint Overlay -->
+            <div id="hint-overlay" class="game-over-overlay hidden">
+                <div class="game-over-content">
+                    <h2>Варіанти є!</h2>
+                    <p>На полі знайдено принаймні одну пару для викреслювання.</p>
+                    <div class="popup-buttons">
+                        <button id="hint-myself-btn" class="primary-btn outline-btn">Знайду сам</button>
+                        <button id="hint-show-btn" class="primary-btn">Покажи!</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="glass-footer">
+            <div class="controls">
+                <button id="undo-btn" class="control-btn" title="Скасувати хід" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+                    <span>Скасувати</span>
+                </button>
+                
+                <button id="add-btn" class="control-btn primary-btn" title="Додати цифри вниз">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <span>Додати</span>
+                </button>
+
+                <button id="hint-btn" class="control-btn" title="Підказка">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1.45.62 2.84 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/></svg>
+                    <span>Підказка</span>
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
