@@ -22,6 +22,7 @@ const startOverlay = document.getElementById('start-overlay');
 const modeClassicBtn = document.getElementById('mode-classic-btn');
 const modeRandomBtn = document.getElementById('mode-random-btn');
 const headerRestartBtn = document.getElementById('header-restart-btn');
+const fullscreenBtn = document.getElementById('fullscreen-btn');
 
 const hintOverlay = document.getElementById('hint-overlay');
 const hintMyselfBtn = document.getElementById('hint-myself-btn');
@@ -33,6 +34,16 @@ modeRandomBtn.addEventListener('click', () => initGame('random'));
 
 headerRestartBtn.addEventListener('click', () => {
     startOverlay.classList.remove('hidden');
+});
+
+fullscreenBtn.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+            console.log(`Error attempting to enable fullscreen: ${err.message}`);
+        });
+    } else {
+        document.exitFullscreen();
+    }
 });
 
 restartBtn.addEventListener('click', () => {
