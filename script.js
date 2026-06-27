@@ -5,13 +5,14 @@ const CLASSIC_NUMBERS = [1,2,3,4,5,6,7,8,9,1,1,1,2,1,3,1,4,1,5,1,6,1,7,1,8,1,9];
 let board = [];
 let selectedIndex = null;
 let history = []; 
-let score = 0;
+let moves = 0;
+let gameMode = 'classic';
 let isAnimating = false;
 let pendingHint = null;
 
 // DOM Elements
 const boardEl = document.getElementById('board');
-const scoreEl = document.getElementById('score');
+const movesEl = document.getElementById('moves');
 const undoBtn = document.getElementById('undo-btn');
 const addBtn = document.getElementById('add-btn');
 const hintBtn = document.getElementById('hint-btn');
@@ -27,6 +28,10 @@ const fullscreenBtn = document.getElementById('fullscreen-btn');
 const hintOverlay = document.getElementById('hint-overlay');
 const hintMyselfBtn = document.getElementById('hint-myself-btn');
 const hintShowBtn = document.getElementById('hint-show-btn');
+
+const continueOverlay = document.getElementById('continue-overlay');
+const continueBtn = document.getElementById('continue-btn');
+const continueNewGameBtn = document.getElementById('continue-new-game-btn');
 
 // Start Game Modes
 modeClassicBtn.addEventListener('click', () => initGame('classic'));
@@ -53,6 +58,7 @@ restartBtn.addEventListener('click', () => {
 
 // Initialization
 function initGame(mode) {
+    gameMode = mode;
     let initialNumbers = [];
     if (mode === 'classic') {
         initialNumbers = [...CLASSIC_NUMBERS];
@@ -66,7 +72,7 @@ function initGame(mode) {
     board = initialNumbers.map(val => ({ value: val, crossed: false }));
     selectedIndex = null;
     history = [];
-    score = 0;
+    moves = 0;
     isAnimating = false;
     pendingHint = null;
     
@@ -125,13 +131,64 @@ function renderBoard() {
 
 function updateUI() {
     renderBoard();
-    scoreEl.textContent = score;
+    movesEl.textContent = moves;
     undoBtn.disabled = history.length === 0;
     
     // Check if game won
     if (board.length > 0 && board.every(c => c.crossed)) {
-        gameOverOverlay.classList.remove('hidden');
+        if (gameOverOverlay.classList.contains('hidden')) {
+            gameOverOverlay.classList.remove('hidden');
+            saveBestScore(gameMode, moves);
+            const winMessage = document.getElementById('win-message');
+            if (winMessage) {
+                winMessage.textContent = `Ви очистили поле за ${moves} ходів!`;
+            }
+        }
     }
+    
+    saveState();
+}
+
+function saveState() {
+    if (board.length === 0) return;
+    if (board.every(c => c.crossed)) {
+        localStorage.removeItem('semechki_state');
+        return;
+    }
+    const state = {
+        board: board.map(c => ({ value: c.value, crossed: c.crossed })),
+        moves: moves,
+        mode: gameMode
+    };
+    localStorage.setItem('semechki_state', JSON.stringify(state));
+}
+
+function saveBestScore(mode, movesCount) {
+    const statsStr = localStorage.getItem('semechki_stats');
+    let stats = { classic: null, random: null };
+    if (statsStr) {
+        try { stats = { ...stats, ...JSON.parse(statsStr) }; } catch(e){}
+    }
+    
+    if (stats[mode] === null || movesCount < stats[mode]) {
+        stats[mode] = movesCount;
+        localStorage.setItem('semechki_stats', JSON.stringify(stats));
+        updateBestScoresDisplay();
+    }
+}
+
+function updateBestScoresDisplay() {
+    const statsStr = localStorage.getItem('semechki_stats');
+    let stats = { classic: null, random: null };
+    if (statsStr) {
+        try { stats = { ...stats, ...JSON.parse(statsStr) }; } catch(e){}
+    }
+    
+    const classicEl = document.getElementById('best-score-classic');
+    const randomEl = document.getElementById('best-score-random');
+    
+    if (classicEl) classicEl.textContent = stats.classic !== null ? stats.classic + ' ходів' : '-';
+    if (randomEl) randomEl.textContent = stats.random !== null ? stats.random + ' ходів' : '-';
 }
 
 // Interaction
@@ -228,8 +285,8 @@ function executeMatch(i1, i2) {
         board[i1].crossed = true;
         board[i2].crossed = true;
         
-        history.push({ type: 'match', i1, i2, scoreBefore: score });
-        score += 10;
+        history.push({ type: 'match', i1, i2, movesBefore: moves });
+        moves++;
         
         selectedIndex = null;
         
@@ -253,7 +310,7 @@ function executeMatch(i1, i2) {
         });
         
         if (newlyEmptyRows.length > 0) {
-            scoreEl.textContent = score; 
+            movesEl.textContent = moves; 
             
             newlyEmptyRows.forEach(r => {
                 for (let c = 0; c < COLS; c++) {
@@ -298,7 +355,8 @@ addBtn.addEventListener('click', () => {
     const newCells = uncrossed.map(val => ({ value: val, crossed: false, isNew: true }));
     board = [...board, ...newCells];
     
-    history.push({ type: 'add', startIndex, scoreBefore: score });
+    history.push({ type: 'add', startIndex, movesBefore: moves });
+    moves++;
     selectedIndex = null;
     
     updateUI();
@@ -389,11 +447,11 @@ undoBtn.addEventListener('click', () => {
     if (lastAction.type === 'match') {
         board[lastAction.i1].crossed = false;
         board[lastAction.i2].crossed = false;
-        score = lastAction.scoreBefore;
+        moves = lastAction.movesBefore;
         selectedIndex = null;
     } else if (lastAction.type === 'add') {
         board.splice(lastAction.startIndex);
-        score = lastAction.scoreBefore;
+        moves = lastAction.movesBefore;
         selectedIndex = null;
     }
     
@@ -402,3 +460,36 @@ undoBtn.addEventListener('click', () => {
 
 // Instead of initGame() immediately, we just wait on start screen
 // Start screen is visible by default in HTML.
+
+const savedStateStr = localStorage.getItem('semechki_state');
+if (savedStateStr) {
+    startOverlay.classList.add('hidden');
+    continueOverlay.classList.remove('hidden');
+}
+
+continueBtn.addEventListener('click', () => {
+    try {
+        const state = JSON.parse(localStorage.getItem('semechki_state'));
+        board = state.board;
+        moves = state.moves || 0;
+        gameMode = state.mode || 'classic';
+        selectedIndex = null;
+        history = [];
+        isAnimating = false;
+        pendingHint = null;
+        
+        continueOverlay.classList.add('hidden');
+        updateUI();
+    } catch(e) {
+        continueOverlay.classList.add('hidden');
+        startOverlay.classList.remove('hidden');
+    }
+});
+
+continueNewGameBtn.addEventListener('click', () => {
+    localStorage.removeItem('semechki_state');
+    continueOverlay.classList.add('hidden');
+    startOverlay.classList.remove('hidden');
+});
+
+updateBestScoresDisplay();

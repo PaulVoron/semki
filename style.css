@@ -449,3 +449,21 @@ h1 {
     line-height: 1.5;
     opacity: 0.8;
 }
+
+.best-scores {
+    margin: 16px 0 24px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 12px;
+    border-radius: var(--border-radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.best-scores span {
+    color: #d4af37;
+    font-weight: 600;
+}

@@ -23,8 +23,8 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
                     </button>
                     <div class="score-container">
-                        <span class="score-label">Рахунок:</span>
-                        <span id="score">0</span>
+                        <span class="score-label">Ходи:</span>
+                        <span id="moves">0</span>
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@
             <div id="game-over" class="hidden game-over-overlay">
                 <div class="game-over-content">
                     <h2>Вітаємо!</h2>
-                    <p>Ви успішно очистили поле!</p>
+                    <p id="win-message">Ви успішно очистили поле!</p>
                     <button id="restart-btn" class="primary-btn">Грати знову</button>
                 </div>
             </div>
@@ -47,9 +47,30 @@
                 <div class="game-over-content">
                     <h2>Оберіть тип гри</h2>
                     <p>Класична розкладка або згенерована випадково?</p>
+                    <div class="best-scores">
+                        <div>Рекорд (Класика): <span id="best-score-classic">-</span></div>
+                        <div>Рекорд (Рандом): <span id="best-score-random">-</span></div>
+                    </div>
                     <div class="popup-buttons">
                         <button id="mode-classic-btn" class="primary-btn">Класична</button>
                         <button id="mode-random-btn" class="primary-btn outline-btn">Рандомна</button>
+                    </div>
+                </div>
+                <div class="author-credits">
+                    Developed by Pavlo Voronin, 2026 &copy;<br>
+                    voron.paul@gmail.com<br>
+                    Version 1.2.0
+                </div>
+            </div>
+
+            <!-- Continue Game Overlay -->
+            <div id="continue-overlay" class="game-over-overlay hidden">
+                <div class="game-over-content">
+                    <h2>З поверненням!</h2>
+                    <p>У вас є незавершена гра. Бажаєте продовжити?</p>
+                    <div class="popup-buttons">
+                        <button id="continue-btn" class="primary-btn">Продовжити</button>
+                        <button id="continue-new-game-btn" class="primary-btn outline-btn">Нова гра</button>
                     </div>
                 </div>
                 <div class="author-credits">
