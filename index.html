@@ -16,6 +16,9 @@
             <div class="header-content">
                 <h1>Сємкі</h1>
                 <div class="header-right">
+                    <button id="rules-btn" class="icon-btn" title="Правила">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                    </button>
                     <button id="fullscreen-btn" class="icon-btn" title="На весь екран">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
                     </button>
@@ -59,7 +62,7 @@
                 <div class="author-credits">
                     Developed by Pavlo Voronin, 2026 &copy;<br>
                     voron.paul@gmail.com<br>
-                    Version 1.3.1
+                    Version 1.4.0
                 </div>
             </div>
 
@@ -76,7 +79,7 @@
                 <div class="author-credits">
                     Developed by Pavlo Voronin, 2026 &copy;<br>
                     voron.paul@gmail.com<br>
-                    Version 1.3.1
+                    Version 1.4.0
                 </div>
             </div>
 
@@ -88,6 +91,24 @@
                     <div class="popup-buttons">
                         <button id="confirm-no-btn" class="primary-btn outline-btn">Скасувати</button>
                         <button id="confirm-yes-btn" class="primary-btn">Так, почати</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rules Overlay -->
+            <div id="rules-overlay" class="game-over-overlay hidden">
+                <div class="game-over-content rules-content">
+                    <h2>Правила гри</h2>
+                    <ul class="rules-list">
+                        <li>Мета гри: повністю очистити поле від цифр.</li>
+                        <li>Знайдіть дві однакові цифри або цифри, сума яких дорівнює 10 (наприклад, 7 і 3).</li>
+                        <li>Цифри можна викреслювати, якщо вони знаходяться поруч по горизонталі або вертикалі.</li>
+                        <li>Пару можна скласти, якщо цифри знаходяться в кінці одного рядка і на початку наступного.</li>
+                        <li>Порожні (вже викреслені) клітинки між цифрами не рахуються як перешкода.</li>
+                        <li>Якщо більше немає ходів, натисніть "Додати", щоб переписати всі невикреслені цифри в кінець списку.</li>
+                    </ul>
+                    <div class="popup-buttons">
+                        <button id="close-rules-btn" class="primary-btn">Зрозуміло</button>
                     </div>
                 </div>
             </div>

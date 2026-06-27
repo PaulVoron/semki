@@ -37,6 +37,10 @@ const confirmResetOverlay = document.getElementById('confirm-reset-overlay');
 const confirmYesBtn = document.getElementById('confirm-yes-btn');
 const confirmNoBtn = document.getElementById('confirm-no-btn');
 
+const rulesBtn = document.getElementById('rules-btn');
+const rulesOverlay = document.getElementById('rules-overlay');
+const closeRulesBtn = document.getElementById('close-rules-btn');
+
 // Start Game Modes
 modeClassicBtn.addEventListener('click', () => initGame('classic'));
 modeRandomBtn.addEventListener('click', () => initGame('random'));
@@ -57,6 +61,14 @@ confirmYesBtn.addEventListener('click', () => {
 
 confirmNoBtn.addEventListener('click', () => {
     confirmResetOverlay.classList.add('hidden');
+});
+
+rulesBtn.addEventListener('click', () => {
+    rulesOverlay.classList.remove('hidden');
+});
+
+closeRulesBtn.addEventListener('click', () => {
+    rulesOverlay.classList.add('hidden');
 });
 
 fullscreenBtn.addEventListener('click', () => {
