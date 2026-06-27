@@ -33,12 +33,30 @@ const continueOverlay = document.getElementById('continue-overlay');
 const continueBtn = document.getElementById('continue-btn');
 const continueNewGameBtn = document.getElementById('continue-new-game-btn');
 
+const confirmResetOverlay = document.getElementById('confirm-reset-overlay');
+const confirmYesBtn = document.getElementById('confirm-yes-btn');
+const confirmNoBtn = document.getElementById('confirm-no-btn');
+
 // Start Game Modes
 modeClassicBtn.addEventListener('click', () => initGame('classic'));
 modeRandomBtn.addEventListener('click', () => initGame('random'));
 
 headerRestartBtn.addEventListener('click', () => {
+    if (board.length === 0 || board.every(c => c.crossed)) {
+        startOverlay.classList.remove('hidden');
+    } else {
+        confirmResetOverlay.classList.remove('hidden');
+    }
+});
+
+confirmYesBtn.addEventListener('click', () => {
+    confirmResetOverlay.classList.add('hidden');
+    localStorage.removeItem('semechki_state');
     startOverlay.classList.remove('hidden');
+});
+
+confirmNoBtn.addEventListener('click', () => {
+    confirmResetOverlay.classList.add('hidden');
 });
 
 fullscreenBtn.addEventListener('click', () => {
